@@ -1,4 +1,4 @@
-with open("input.txt") as f:
+with open("input.txt", "r") as f:
     modules = f.readlines()
 
 required_fuel = 0

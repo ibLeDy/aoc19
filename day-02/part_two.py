@@ -1,6 +1,6 @@
 import random
 
-with open("input.txt") as f:
+with open("input.txt", "r") as f:
     program = list(map(int, f.read().split(",")))
 
 steps = 4
