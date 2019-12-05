@@ -24,11 +24,33 @@ def run(program):
             program[program[count + 3]] = param_mode(instr, 1) * param_mode(instr, 2)
             count += 4
         elif opc == 3:
-            program[program[count + 1]] = 1  # hardcoded
+            program[program[count + 1]] = 5  # hardcoded
             count += 2
         elif opc == 4:
             print(param_mode(instr, 1))
             count += 2
+        elif opc == 5:
+            if param_mode(instr, 1):
+                count = param_mode(instr, 2)
+            else:
+                count += 3
+        elif opc == 6:
+            if not param_mode(instr, 1):
+                count = param_mode(instr, 2)
+            else:
+                count += 3
+        elif opc == 7:
+            if param_mode(instr, 1) < param_mode(instr, 2):
+                program[program[count + 3]] = 1
+            else:
+                program[program[count + 3]] = 0
+            count += 4
+        elif opc == 8:
+            if param_mode(instr, 1) == param_mode(instr, 2):
+                program[program[count + 3]] = 1
+            else:
+                program[program[count + 3]] = 0
+            count += 4
         else:
             raise AssertionError(f"wut {program} {count}")
     raise AssertionError(f"wat {program} {count}")
