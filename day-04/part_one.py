@@ -1,9 +1,3 @@
-# 6 digit number
-# dange from 236491 to 713787
-# 2 same adjacent digits
-# digits never decrease (left to right)
-
-
 with open("input.txt", "r") as f:
     start_s, end_s = map(int, f.read().split("-"))
     start, end = int(start_s), int(end_s)
@@ -28,6 +22,7 @@ def compute_result():
             if c == prev:
                 valid = True
             prev = c
+
         if not valid:
             continue
 
