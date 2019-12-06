@@ -1,37 +1,26 @@
-with open("input.txt", "r") as f:
-    data = f.read()
-    print(data)
-
-def search(root,key): 
-    if root is None or root.val == key: 
-        return root 
-
-    if root.val < key: 
-        return search(root.right, key) 
-    
-    return search(root.left, key) 
+from typing import NamedTuple
 
 
-class Root:
-def __init__(self, data):
-    self.left = self.right = None
-    self.val = data
+class Node(NamedTuple):
+    parent: str
+    name: str
 
-class Solution:
-    def insert(self,root,data):
-        if root == None:
-            return Node(data)
-        else:
-            if data <= root.data:
-                cur = self.insert(root.left,data)
-                root.left = cur
-            else:
-                cur = self.insert(root.right,data)
-                root.right = cur
-        
-        return root
+def get_input():
+    with open('input.txt', 'r') as f:
+        data = f.read()
+    return data
 
-tree = Solution()
-root = None
-for i in range(T):
-    root = tree.insert(root, data)
+def compute(data):
+    nodes = {'COM': Node('', 'COM')}
+    for line in data.strip().splitlines():
+        parent, name = line.split(')')
+        nodes[name] = Node(parent, name)
+
+    count = 0
+    for node in nodes.values():
+        while node.name != 'COM':
+            count += 1
+            node = nodes[node.parent]
+    return count
+
+print(compute(get_input()))
