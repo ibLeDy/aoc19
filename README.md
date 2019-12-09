@@ -8,3 +8,4 @@ Completed:
 - [**Day 4**](https://adventofcode.com/2019/day/4) - ([Part 1](day-04/part_one.py) | [Part 2](day-04/part_two.py))
 - [**Day 5**](https://adventofcode.com/2019/day/5) - ([Part 1](day-05/part_one.py) | [Part 2](day-05/part_two.py))
 - [**Day 6**](https://adventofcode.com/2019/day/6) - ([Part 1](day-06/part_one.py))
+- [**Day 8**](https://adventofcode.com/2019/day/8) - ([Part 1](day-08/part_one.py))
