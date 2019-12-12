@@ -1,61 +1,60 @@
 from typing import NamedTuple
+import re
 
-class Position:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
 
-class Velocity:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+VECTOR_RE = re.compile(r'-?\d+')
+
+
+class Vector(NamedTuple):
+    x: int
+    y: int
+    z: int
+
+    def add(self, other):
+        return self._replace(
+            x=self.x + other.x,
+            y=self.y + other.y,
+            z=self.z + other.z,
+        )
+
+class Moon(NamedTuple):
+    pos: Vector
+    vel: Vector
+
 
 with open("input.txt", "r") as f:
-    data = f.read().strip().splitlines()
+    data = f.read().splitlines()
 
-moons = ["io", "europa", "ganymede", "callisto"]
+moons = []
+for d in data:
+    x, y, z = VECTOR_RE.findall(d)
+    moons.append(Moon(Vector(int(x), int(y), int(z)), Vector(0, 0, 0)))
 
-scan = {}
-for i, moon in enumerate(moons):
-    x, y, z = [int(p.split("=")[-1]) for p in data[i].strip("<>").split(", ")]
-    scan[moon] = [Position(x, y, x), Velocity(0, 0, 0)]
+for _ in range(1000):
+    for i, moon in enumerate(moons):
+        vel_x, vel_y, vel_z = moon.vel
+        for next_moon in moons:
+            if next_moon is moon:
+                continue
+            if next_moon.pos.x > moon.pos.x:
+                vel_x += 1
+            elif next_moon.pos.x < moon.pos.x:
+                vel_x -= 1
+            if next_moon.pos.y > moon.pos.y:
+                vel_y += 1
+            elif next_moon.pos.y < moon.pos.y:
+                vel_y -= 1
+            if next_moon.pos.z > moon.pos.z:
+                vel_z += 1
+            elif next_moon.pos.z < moon.pos.z:
+                vel_z -= 1
 
-for moon in scan:
-    x = [1 if v[0].x < scan[moon][0].x else 0 for k, v in scan.items() if k != moon and v[0].x != scan[moon][0].x]
-    y = [1 if v[0].y < scan[moon][0].y else 0 for k, v in scan.items() if k != moon and v[0].y != scan[moon][0].y]
-    z = [1 if v[0].z < scan[moon][0].z else 0 for k, v in scan.items() if k != moon and v[0].z != scan[moon][0].z]  
+        moons[i] = moon._replace(vel=Vector(vel_x, vel_y, vel_z))
 
-    for i in x:
-        if i == 1:
-            scan[moon][1].x += 1
-        elif i == 0:
-            scan[moon][1].x -= 1
+    for i, moon in enumerate(moons):
+        moons[i] = moon._replace(pos=moon.pos.add(moon.vel))
 
-    for i in y:
-        if i == 1:
-            scan[moon][1].y += 1
-        elif i == 0:
-            scan[moon][1].y -= 1
-
-    for i in z:
-        if i == 1:
-            scan[moon][1].z += 1
-        elif i == 0:
-            scan[moon][1].z -= 1
-
-
-for moon in scan:
-    print((scan[moon][0].x, scan[moon][0].y, scan[moon][0].z),
-           (scan[moon][1].x, scan[moon][1].y, scan[moon][1].z))
-
-
-# steps = {}
-# steps[count] = 
-# steps = {
-#     0: {
-#         "positions": positions,
-#         "velocities": velocities
-#     } 
-# }
+print(sum(
+    sum(abs(p) for p in moon.pos) * sum(abs(v) for v in moon.vel)
+    for moon in moons
+))
