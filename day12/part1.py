@@ -1,5 +1,5 @@
-from typing import NamedTuple
 import re
+from typing import NamedTuple
 
 
 VECTOR_RE = re.compile(r'-?\d+')

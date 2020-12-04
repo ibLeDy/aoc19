@@ -1,5 +1,5 @@
-from collections import defaultdict
 import sys
+from collections import defaultdict
 
 
 def add_tuples(tuple1, tuple2):

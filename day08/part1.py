@@ -1,9 +1,9 @@
 def get_fewest_0_layer(layers):
     fewest_0 = [999, 0]
-    for l in layers:
-        if l.count("0") < fewest_0[0]:
-            fewest_0[0] = l.count("0")
-            fewest_0[1] = l
+    for layer in layers:
+        if layer.count("0") < fewest_0[0]:
+            fewest_0[0] = layer.count("0")
+            fewest_0[1] = layer
     return fewest_0[1]
 
 def create_layers(data, layer_size):
